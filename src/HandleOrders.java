@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class HandleOrders {
@@ -11,6 +12,7 @@ public class HandleOrders {
     private double totalOrderPrice = 0.0;
     private int numberOfPizzasOrdered = 0;
     StringBuilder pizzaOrderSummary = new StringBuilder();
+    private ArrayList<CustomPizza> customPizzas = new ArrayList<>();
 
     Scanner input = new Scanner(System.in);
 
@@ -78,6 +80,7 @@ public class HandleOrders {
                 }
             } else if (choice == 6){
                 double customPizzaPrice = 0;
+                StringBuilder customPizzaToppings = new StringBuilder();
                 
                 System.out.println("For your custom pizza, here are the toppings:");
                 int k = 1;
@@ -97,7 +100,7 @@ public class HandleOrders {
                     if(toppingChoice == 0){
                         break;
                     }
-                    customPizza.append(PizzaToppings.values()[toppingChoice-1].getTopping() + ", ");
+                    customPizzaToppings.append(PizzaToppings.values()[toppingChoice-1].getTopping() + ", ");
                     customPizzaPrice += PizzaToppings.values()[toppingChoice-1].getToppingPrice();
                     l++;
                 }while(l!=10 || l!=0);
@@ -106,6 +109,9 @@ public class HandleOrders {
                 
                 customPizza.append(": €" + customPizzaPrice);
 
+                CustomPizza newCustomPizza = new CustomPizza(customPizzaToppings.toString(), customPizzaPrice);
+                customPizzas.add(newCustomPizza);
+                
                 pizzasOrdered[j] = customPizza.toString();
                 totalOrderPrice += customPizzaPrice;
                 numberOfPizzasOrdered++;
@@ -182,6 +188,19 @@ public class HandleOrders {
 
         pizzaOrderSummary.append("ORDER TOTAL: €" + totalOrderPrice + "\n");
 
+    }
+
+    public void displayCustomPizzas() {
+        if (customPizzas.isEmpty()) {
+            System.out.println("No custom pizza orders.");
+            return;
+        }
+        
+        System.out.println("\n=== Custom Pizza Orders ===");
+        for (CustomPizza pizza : customPizzas) {
+            System.out.println(pizza);
+        }
+        System.out.println("========================");
     }
 
     @Override
